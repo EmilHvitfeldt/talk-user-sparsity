@@ -1,0 +1,190 @@
+// https://catppuccin.com/
+$colors: (
+  "text": #cdd6f4,
+  "base": #1e1e2e,
+
+  "white": #ffffff,
+  "orange": #e57e29,
+  "black": #0f1a38,
+  "lightyellow": #faeec8,
+  "yellow": #ffe9a2,
+  "brown": #5d3619,
+  "blue": #282898
+);
+
+@import url('https://fonts.googleapis.com/css2?family=Chelsea+Market&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+/*-- scss:functions --*/
+
+@function theme-color($color) {
+  @return map-get($colors, $color);
+}
+
+/*-- scss:defaults --*/
+
+$body-bg: theme-color("base");
+$body-color: theme-color("black");
+$link-color: theme-color("orange");
+$code-color: theme-color("blue");
+
+$presentation-font-size-root: 50px;
+
+$presentation-heading-font: "Chelsea Market";
+$font-family-sans-serif: "Lato";
+
+/*-- scss:rules --*/
+
+@each $name, $color in $colors {
+  .text-#{$name} {
+    color: $color;
+  }
+
+  .bg-#{$name} {
+    background-color: $color;
+  }
+}
+
+@mixin background-full {
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@mixin theme-slide($number) {
+  .theme-slide#{$number} {
+    &:is(.slide-background) {
+      background-image: url('../../../../../assets/slide#{$number}.svg');
+      @include background-full;
+    }
+  }
+}
+
+@for $i from 0 through 12 {
+  @include theme-slide($i);
+}
+
+.reveal {
+  pre.sourceCode code {
+    max-height: 1500px;
+  }
+
+  pre {
+    background-color: theme-color("white");
+  }
+
+  pre code {
+    background-color: theme-color("white");
+     padding: 25px;
+    }
+    
+    div.sourceCode {
+      border: none;
+      color: theme-color("base");
+    }
+    
+    pre.sourceCode {
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 10px !important;
+      margin: auto !important;
+    }
+    
+    div.sourceCode pre code {
+      padding: 25px;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: theme-color("orange");
+    text-shadow: 3px 3px theme-color("brown");
+  }
+
+  .slides section .fragment.hl-start {
+    opacity: unset;
+    visibility: unset;
+
+    &.visible {
+      outline-color: theme-color("orange");
+      outline-width: 10px;
+      outline-style: inset;
+    }
+  }
+}
+
+.mono {
+  font-family: monospace;
+}
+
+.title {
+  font-family: "Chelsea Market";
+  color: theme-color("black");
+}
+
+// Code highlighting
+
+code {
+  span.an,
+  span.op,
+  span.sc,
+  span.in,
+  span.wa,
+  span.do,
+  span.cv,
+  span.co {
+    color: #5E5E5E;
+  }
+
+  span.er,
+  span.bn,
+  span.al,
+  span.pp,
+  span.dt,
+  span.fl,
+  span.dv {
+    color: #AD0000;
+  }
+
+  span.ss,
+  span.st,
+  span.vs,
+  span.ch {
+    color: #20794D;
+  }
+
+  span.ot,
+  span.cf,
+  span.kw {
+    color: #003B4F;
+  }
+
+  span.at {
+    color: #657422;
+  }
+
+  span.fu {
+    color: #4758AB;
+  }
+
+  span.va {
+    color: #111111;
+  }
+
+  span.im {
+    color: #00769E;
+  }
+
+  span.cn {
+    color: #8f5902;
+  }
+
+  span.bu {}
+
+  span.ex {}
+}
+
+pre > code.sourceCode > span {
+  color: theme-color("base");
+}

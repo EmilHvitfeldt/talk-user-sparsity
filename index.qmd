@@ -1,0 +1,639 @@
+---
+format:
+  revealjs:
+    theme: [default, styles.scss]
+    width: 1280
+    height: 720
+    include-after-body: 
+      - "all-the-js-code.html"
+pagetitle: Title of Talk
+echo: true
+code-line-numbers: false
+menu: false
+progress: false
+---
+
+## {.theme-slide1}
+
+::: {.title .absolute left=43% top=-15% style="font-size:70px; text-align:center;"}
+sparsity  
+support in  
+tidymodels
+:::
+
+::: {style="height:400px;"}
+:::
+
+::: {.r-fit-text .title}
+faster and less memory hungry models
+:::
+
+::: {style="height:100px;"}
+:::
+
+::: {.absolute left=0%}
+Emil Hvitfeldt
+:::
+
+::: {.absolute right=0%}
+useR! 2025
+:::
+
+![](dinos/green4.svg){.absolute top=60% left=20% height=450px}
+
+![](dinos/yellow2.svg){.absolute top=80% left=60% height=150px}
+![](dinos/sand2.svg){.absolute top=85% left=50% height=150px}
+![](dinos/sand2.svg){.absolute top=90% left=65% height=150px}
+
+![](dinos/blue7.svg){.absolute top=-20% left=0% height=250px}
+
+
+## Motivated example {.theme-slide0}
+
+```{r}
+#| eval: false
+library(tidymodels)
+library(nycflights13)
+library(sparsevctrs)
+
+flights$arr_time <- NULL
+flights$time_hour <- NULL
+flights <- flights[!is.na(flights$arr_delay), ]
+
+rec <- recipe(arr_delay ~ ., data = flights) |>
+  step_impute_mean(all_numeric_predictors()) |>
+  step_unknown(all_nominal_predictors()) |>
+  step_dummy(all_nominal_predictors())
+
+mod <- boost_tree() |>
+  set_engine("xgboost") |>
+  set_mode("regression")
+
+wf_spec <- workflow(rec, mod)
+```
+
+![](dinos/green7.svg){.absolute top=-10% right=20% height=200px}
+![](dinos/yellow7.svg){.absolute top=-10% right=10% height=200px}
+![](dinos/orange7.svg){.absolute top=-10% right=00% height=200px}
+
+## Fitting the workflow {.theme-slide3}
+
+::: {style="height:50px;"}
+:::
+
+:::: {.columns}
+::: {.column}
+### Last year
+
+runtime: [**480 seconds**]{.fragment fragment-index=1}
+
+Memory allocated: [**82 GB**]{.fragment fragment-index=3}
+
+:::
+::: {.column}
+### Today
+
+runtime: [**4 seconds**]{.fragment fragment-index=2}
+
+Memory allocated: [**822 MB**]{.fragment fragment-index=3}
+
+:::
+::::
+
+![](dinos/pink5.svg){.absolute bottom=-40% right=20% height=700px}
+
+## {.theme-slide1 .center}
+
+::: {style="height:350px;"}
+:::
+
+::: {.title style="font-size:200px; text-align:center;"}
+ALTREP
+:::
+
+![](dinos/green6.svg){.absolute bottom=-30% right=-30% height=900px style="max-height:unset;"}
+
+## What is ALTREP? {.theme-slide6}
+
+Short for **ALT**erntive **REP**resentation
+
+Some examples of intended uses would be to
+
+::: {style="height:75px;"}
+:::
+
+- allow vector data to be in a memory-mapped file or distributed
+- allow compact representation of arithmetic sequences
+- support adding meta-data to objects
+- support alternative representations of environments
+
+:::footer
+<https://svn.r-project.org/R/branches/ALTREP/ALTREP.html>
+:::
+
+![](dinos/yellow7.svg){.absolute top=-15% right=30% height=200px}
+
+## Integer sequences {.theme-slide10}
+
+created using 
+
+:::{.absolute left=7% top=35%}
+`n:m`
+:::
+
+:::{.absolute left=23% top=45%}
+`seq()`
+:::
+
+:::{.absolute left=35% top=50%}
+`seq_len()`
+:::
+
+:::{.absolute left=62% top=40%}
+`seq_along()`
+:::
+
+![](dinos/blue3.svg){.absolute bottom=-15% right=30% height=400px}
+![](dinos/blue3.svg){.absolute bottom=-7% right=25% height=200px}
+![](dinos/blue3.svg){.absolute bottom=-8% right=18% height=200px}
+![](dinos/blue3.svg){.absolute bottom=-6.5% right=11% height=200px}
+![](dinos/blue3.svg){.absolute bottom=-7.5% right=4% height=200px}
+![](dinos/blue3.svg){.absolute bottom=-8% right=-3% height=200px}
+![](dinos/blue3.svg){.absolute bottom=-6.5% right=-10% height=200px}
+
+
+## Integer sequences {.theme-slide0}
+
+::: {.columns .fragment}
+::: {.column}
+
+```{r}
+#| results: hold
+#| output-location: fragment
+library(lobstr)
+
+obj_size(numeric(100))
+obj_size(numeric(1000))
+obj_size(numeric(10000))
+```
+
+:::
+::: {.column .fragment}
+
+```{r}
+#| results: hold
+#| output-location: fragment
+library(lobstr)
+
+obj_size(seq_len(100))
+obj_size(seq_len(1000))
+obj_size(seq_len(10000))
+```
+
+:::
+:::
+
+![](dinos/pink8.svg){.absolute bottom=--40% left=-10% height=550px style="transform: scaleX(-1);"}
+
+## Integer sequences {.theme-slide8 style="color: white;"}
+
+::: {style="height:250px;"}
+:::
+
+::: {.mono style="text-align:center;"}
+
+[1]{.fragment fragment-index=2 .hl-start} 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+
+::: {.fragment fragment-index=1 style="width: 35ch; height: 10px; margin: auto; background-color:#e57e29;"}
+:::
+
+::: {.fragment fragment-index=3 style="width: 3ch; height: 10px; padding-right: 32ch; background-clip: content-box; margin: auto; margin-top:20px; background-color:#e57e29;"}
+:::
+
+:::
+
+<br>
+
+::: {style="text-align:center;"}
+
+[length]{.fragment fragment-index=1} \ \ \ \ \ [start]{.fragment fragment-index=2} \ \ \ \ \ [step]{.fragment fragment-index=3}
+
+:::
+
+![](dinos/sand4.svg){.absolute bottom=-20% right=-05% height=450px}
+
+![](dinos/green1.svg){.absolute bottom=-20% left=-5% height=350px style="transform: scaleX(-1);"}
+
+## Integer sequences {.theme-slide0}
+
+pseudo implementation for `length()` and `sum()`
+
+<br>
+
+```{r}
+int_seq_length <- function(x) {
+  x[1]
+}
+
+int_seq_sum <- function(x) {
+  length <- x[1]
+  start <- x[2]
+  step <- x[3]
+
+  (length / 2.0) * (start * 2 + step * (length - 1))
+}
+```
+
+## Alrep methods {.theme-slide0}
+
+::: {.columns style="font-size:0.8em;"}
+::: {.column width="33%"}
+
+**altrep**
+
+- UnserializeEX
+- Unserialize
+- Serialized_state
+- DuplicateEX
+- Duplicate
+- Coerce
+- Inspect
+- Length
+
+:::
+::: {.column width="33%"}
+
+**altvec**
+
+- Dataptr
+- Dataptr_or_null
+- Extract_subset
+
+:::
+::: {.column width="33%"}
+
+**integer**
+
+- Elt
+- Get_region
+- Is_sorted
+- No_NA
+- Sum
+- Min
+- Max
+
+:::
+:::
+
+![](dinos/blue8.svg){.absolute bottom=-120% left=15% height=1200px style="max-height:unset;"}
+
+## {.theme-slide1 .center}
+
+::: {style="height:350px;"}
+:::
+
+::: {.title style="font-size:200px; text-align:center;"}
+SPARSITY
+:::
+
+![](dinos/green1.svg){.absolute top=35% left=20% height=140px}
+![](dinos/green1.svg){.absolute top=22% left=16% height=130px}
+![](dinos/green1.svg){.absolute top=10% left=12% height=120px}
+
+## sparse vector {.theme-slide8 style="color: white;"}
+
+::: {style="height:250px;"}
+:::
+
+::: {style="margin: auto; display: flex;"}
+
+::: {.fragment fragment-index=2 style="width: 1ch; height: 10px; padding-left: 11.5ch; background-clip: content-box; margin-top:20px; background-color:#e57e29; position: relative;"}
+:::
+::: {.fragment fragment-index=2 style="width: 1ch; height: 10px; padding-right: 8.5ch; background-clip: content-box; margin: auto; margin-top:20px; background-color:#e57e29; position: relative;"}
+:::
+
+:::
+
+::: {.mono style="text-align:center;"}
+
+0 0 0 0 0 [2]{.fragment fragment-index=3 .hl-start} 0 0 0 0 0 [4]{.fragment fragment-index=3 .hl-start} 0 0 0 0 0 0 0 0 0
+
+:::
+
+::: {.fragment fragment-index=1 style="width: 44ch; height: 10px; margin: auto; background-color:#e57e29;"}
+:::
+
+<br>
+
+::: {style="text-align:center;"}
+
+[length]{.fragment fragment-index=1} \ \ \ \ \ [positions]{.fragment fragment-index=2} \ \ \ \ \ [values]{.fragment fragment-index=3}
+
+:::
+
+![](dinos/pink7.svg){.absolute top=10% right=12% height=180px}
+![](dinos/blue7.svg){.absolute top=0% right=25% height=180px}
+
+## Sparse operations {.theme-slide0}
+
+<br>
+
+::: {.columns}
+::: {.column}
+
+```{r}
+sparse_sum <- function(x) {
+  sum(x$values)
+}
+
+sparse_mean <- function(x) {
+  sum(x$values) / x$length
+}
+```
+
+:::
+::: {.column}
+
+```{r}
+sparse_elt <- function(x, i) {
+  if (i %in% x$positions) {
+    index <- match(i, x$positions)
+
+    return(x$values[index])
+  } else {
+    return(0)
+  }
+}
+```
+
+:::
+:::
+
+## Sparse operations in C {.theme-slide0}
+
+::: {style="font-size:0.6em;"}
+
+```c
+static int altrep_sparse_integer_Elt(SEXP x, R_xlen_t i) {
+  SEXP val = extract_val(x);
+
+  SEXP pos = extract_pos(x);
+  const int* v_pos = INTEGER_RO(pos);
+  const R_xlen_t size = Rf_xlength(pos);
+
+  const R_xlen_t len = extract_len(x);
+
+  const int v_default_val = extract_default_integer(x);
+
+  if (i > len) {
+    // OOB of vector itself
+    return NA_INTEGER;
+  }
+
+  const int needle = (int) i + 1;
+  const R_xlen_t loc = binary_search(needle, v_pos, size);
+
+  if (loc == size) {
+    // Can't find it, must be the default value
+    return v_default_val;
+  } else {
+    // Look it up in `val`
+    return INTEGER_ELT(val, loc);
+  }
+}
+```
+
+:::
+
+## sparsevctrs {.theme-slide7}
+
+::: {.columns}
+::: {.column}
+
+::: {.incremental}
+- All ALTREP happens in C
+- Operations must match dense operations
+- Very fragile, will materialize if not careful
+:::
+
+:::
+::: {.column}
+
+![](images/sparsevctrs.svg){style="margin-top:-100px;"}
+
+:::
+:::
+
+::: footer
+<https://r-lib.github.io/sparsevctrs/>
+:::
+
+## sparsevctrs {.theme-slide7}
+
+::: {.columns}
+::: {.column}
+
+- Contains converters between sparse matrices from {Matrix} and tibbles with sparse vectors
+
+::: {.incremental}
+- Is a developer focused package
+:::
+
+:::
+::: {.column}
+
+![](images/sparsevctrs.svg){style="margin-top:-100px;"}
+
+:::
+:::
+
+::: footer
+<https://r-lib.github.io/sparsevctrs/>
+:::
+
+## {.theme-slide1 .center}
+
+::: {style="height:350px;"}
+:::
+
+::: {.title style="font-size:130px; text-align:center;"}
+INTEGRATION
+:::
+
+![](dinos/blue2.svg){.absolute bottom=-45% left=0% height=200px}
+![](dinos/green2.svg){.absolute bottom=-45% left=17% height=200px}
+![](dinos/sand2.svg){.absolute bottom=-45% left=34% height=200px}
+![](dinos/yellow2.svg){.absolute bottom=-45% left=51% height=200px}
+![](dinos/orange2.svg){.absolute bottom=-45% left=68% height=200px}
+![](dinos/pink2.svg){.absolute bottom=-45% left=85% height=200px}
+
+## Why are we doing this? {.theme-slide7}
+
+- Because sparse matrices from {Matrix} doesn't work with tibbles
+
+- tidymodels is built on tibbles
+
+![](dinos/orange7.svg){.absolute bottom=5% left=55% height=500px}
+
+## Integration in tidymodels {.theme-slide8 style="color: white;"}
+
+::: {style="height:250px;"}
+:::
+
+1. Tibbles can contain sparse vectors inside all of tidymodels internals
+
+1. recipe steps can produce sparsity
+
+1. Automatic toggle
+
+![](dinos/sand5.svg){.absolute bottom=-55% left=60% height=1000px style="max-height:unset;"}
+
+## Integration in tidymodels {.theme-slide9}
+
+### sparse tibbles in internals
+
+Making it so sparse matrices are turned into sparse tibbles in all entry points
+
+`recipe()`, `prep()`, `bake()`, `fit()`, `predict()`, and `augment()`
+
+Adding a ton of testing with sparse matrices and sparse tibbles
+
+## Integration in tidymodels {.theme-slide4}
+
+### recipe steps
+
+Recipes steps that could produce sparse data now have `sparse` argument
+
+It takes 3 values:
+
+- `"yes"`: Generate sparse vectors
+- `"no"`: Don't generate sparse vectors
+- `"auto"`: Automatically decide (default)
+
+## Integration in tidymodels {.theme-slide2}
+
+### Automatic toggle
+
+::: {style="height:200px;"}
+:::
+
+1. Does model support sparse data?
+2. Is there high sparsity in the data?
+
+If the answer to both questions are "yes" then tidymodels will do things sparsely
+
+![](dinos/pink7.svg){.absolute top=-10% right=-2% height=220px}
+
+## Integration in tidymodels {.theme-slide2}
+
+### detecting high sparsity
+
+::: {style="height:200px;"}
+:::
+
+The sparsity matters for the parsnip model
+
+::: {style="height:20px;"}
+:::
+
+We need to estimate the sparsity that comes out of recipes
+
+::: {style="height:20px;"}
+:::
+
+Each step have a method that returns how it is expected to change sparsity
+
+![](dinos/pink7.svg){.absolute top=-10% right=-2% height=220px}
+
+## Integration in tidymodels {.theme-slide2}
+
+### detecting high sparsity
+
+::: {style="height:200px;"}
+:::
+
+Simulation study using different sizes of data, different amounts of sparsity, for all supported models
+
+::: {style="height:20px;"}
+:::
+
+Fit MARS model on the `log(dense time / sparse time)`
+
+::: {style="height:20px;"}
+:::
+
+used orbital to embed this fitted model in the toggler 
+
+::: footer
+<https://github.com/tidymodels/benchmark-sparsity-threshold>
+:::
+
+![](dinos/pink7.svg){.absolute top=-10% right=-2% height=220px}
+
+## {.theme-slide12 .center}
+
+::: {style="height:350px;"}
+:::
+
+::: {.title style="font-size:100px; text-align:center;"}
+USER EXPERIENCE
+:::
+
+## New features {.theme-slide8 style="color: white;"}
+
+::: {style="height:300px;"}
+:::
+
+- sparse data input now have native support in tidymodels
+
+::: {style="height:20px;"}
+:::
+
+- automatic toggle can be turned off or on manually by setting `sparse = "no"` or `"yes"` in relevant steps
+
+::: footer
+<https://www.tidymodels.org/find/sparse/>
+:::
+
+![](dinos/orange5.svg){.absolute top=10% left=10% height=400px}
+
+![](dinos/pink5.svg){.absolute top=10% right=0% height=450px}
+
+
+## Motivated example {.theme-slide0}
+
+```{r}
+#| eval: false
+library(tidymodels)
+library(nycflights13)
+library(sparsevctrs)
+
+flights$arr_time <- NULL
+flights$time_hour <- NULL
+flights <- flights[!is.na(flights$arr_delay), ]
+
+rec <- recipe(arr_delay ~ ., data = flights) |>
+  step_impute_mean(all_numeric_predictors()) |>
+  step_unknown(all_nominal_predictors()) |>
+  step_dummy(all_nominal_predictors(), sparse = TRUE)
+
+mod <- boost_tree() |>
+  set_engine("xgboost") |>
+  set_mode("regression")
+
+wf_spec <- workflow(rec, mod)
+```
+
+## {.theme-slide11}
+
+::: r-fit-text
+Thank you!
+:::
+
+::: {style="text-align:right; text-decoration: underline; text-decoration-color: #e57e29;"}
+[Articles](https://www.tidymodels.org/learn/#category=sparse%20data)
+
+[Blogpost](https://www.tidyverse.org/blog/2025/03/tidymodels-sparsity/)
+
+[Compatible models and steps](https://www.tidymodels.org/find/sparse/)
+:::
