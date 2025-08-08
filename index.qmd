@@ -637,3 +637,5 @@ Thank you!
 
 [Compatible models and steps](https://www.tidymodels.org/find/sparse/)
 :::
+
+![](images/qr.svg){.absolute bottom=-15% left=0% height=500px style="background-color: #faeec8;"}
