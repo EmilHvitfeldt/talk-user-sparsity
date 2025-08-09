@@ -64,33 +64,33 @@ $font-family-sans-serif: "Lato";
 }
 
 .reveal {
-  pre.sourceCode code {
-    max-height: 1500px;
-  }
-
   pre {
     background-color: theme-color("white");
-  }
 
-  pre code {
-    background-color: theme-color("white");
-     padding: 25px;
-    }
-    
-    div.sourceCode {
-      border: none;
-      color: theme-color("base");
-    }
-    
-    pre.sourceCode {
+    &.sourceCode {
       border: none;
       border-radius: 5px;
       margin-bottom: 10px !important;
       margin: auto !important;
+
+      code {
+        max-height: 1500px;
+      }
     }
-    
-    div.sourceCode pre code {
+
+    code {
+      background-color: theme-color("white");
       padding: 25px;
+    }
+  }
+
+  div.sourceCode {
+    border: none;
+    color: theme-color("base");
+
+    pre code {
+      padding: 25px;
+    }
   }
 
   h2,
