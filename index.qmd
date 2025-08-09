@@ -50,6 +50,8 @@ useR! 2025
 
 ## Motivated example {.theme-slide0}
 
+::: {style="font-size: 0.85em"}
+
 ```{r}
 #| eval: false
 library(tidymodels)
@@ -71,6 +73,8 @@ mod <- boost_tree() |>
 
 wf_spec <- workflow(rec, mod)
 ```
+
+:::
 
 ![](dinos/green7.svg){.absolute top=-10% right=20% height=200px}
 ![](dinos/yellow7.svg){.absolute top=-10% right=10% height=200px}
@@ -599,11 +603,13 @@ USER EXPERIENCE
 
 ![](dinos/pink5.svg){.absolute top=10% right=0% height=450px}
 
+## What to change {.theme-slide0}
 
-## Motivated example {.theme-slide0}
+::: {style="font-size: 0.85em"}
 
 ```{r}
 #| eval: false
+#| code-line-numbers: "|12"
 library(tidymodels)
 library(nycflights13)
 library(sparsevctrs)
@@ -615,7 +621,7 @@ flights <- flights[!is.na(flights$arr_delay), ]
 rec <- recipe(arr_delay ~ ., data = flights) |>
   step_impute_mean(all_numeric_predictors()) |>
   step_unknown(all_nominal_predictors()) |>
-  step_dummy(all_nominal_predictors(), sparse = TRUE)
+  step_dummy(all_nominal_predictors(), sparse = "auto")
 
 mod <- boost_tree() |>
   set_engine("xgboost") |>
@@ -623,6 +629,8 @@ mod <- boost_tree() |>
 
 wf_spec <- workflow(rec, mod)
 ```
+
+:::
 
 ## {.theme-slide11}
 

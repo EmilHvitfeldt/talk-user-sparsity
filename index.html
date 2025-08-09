@@ -219,6 +219,7 @@ tidymodels</p>
 </section>
 <section id="motivated-example" class="slide level2 theme-slide0">
 <h2>Motivated example</h2>
+<div style="font-size: 0.85em">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span>
@@ -238,6 +239,7 @@ tidymodels</p>
 <span id="cb1-16"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
 <span id="cb1-17"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-18"><a href="" aria-hidden="true" tabindex="-1"></a>wf_spec <span class="ot">&lt;-</span> <span class="fu">workflow</span>(rec, mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 <p><img data-src="dinos/green7.svg" class="absolute" style="top: -10%; right: 20%; height: 200px; "> <img data-src="dinos/yellow7.svg" class="absolute" style="top: -10%; right: 10%; height: 200px; "> <img data-src="dinos/orange7.svg" class="absolute" style="top: -10%; right: 00%; height: 200px; "></p>
 </section>
@@ -673,27 +675,29 @@ tidymodels</p>
 <p><img data-src="dinos/orange5.svg" class="absolute" style="top: 10%; left: 10%; height: 400px; "></p>
 <p><img data-src="dinos/pink5.svg" class="absolute" style="top: 10%; right: 0%; height: 450px; "></p>
 </section>
-<section id="motivated-example-1" class="slide level2 theme-slide0">
-<h2>Motivated example</h2>
+<section id="what-to-change" class="slide level2 theme-slide0">
+<h2>What to change</h2>
+<div style="font-size: 0.85em">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span>
-<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sparsevctrs)</span>
-<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="" aria-hidden="true" tabindex="-1"></a>flights<span class="sc">$</span>arr_time <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb10-6"><a href="" aria-hidden="true" tabindex="-1"></a>flights<span class="sc">$</span>time_hour <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb10-7"><a href="" aria-hidden="true" tabindex="-1"></a>flights <span class="ot">&lt;-</span> flights[<span class="sc">!</span><span class="fu">is.na</span>(flights<span class="sc">$</span>arr_delay), ]</span>
-<span id="cb10-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="" aria-hidden="true" tabindex="-1"></a>rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(arr_delay <span class="sc">~</span> ., <span class="at">data =</span> flights) <span class="sc">|&gt;</span></span>
-<span id="cb10-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_mean</span>(<span class="fu">all_numeric_predictors</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb10-11"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_unknown</span>(<span class="fu">all_nominal_predictors</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb10-12"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>(), <span class="at">sparse =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb10-13"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-14"><a href="" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">boost_tree</span>() <span class="sc">|&gt;</span></span>
-<span id="cb10-15"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"xgboost"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-16"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb10-17"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-18"><a href="" aria-hidden="true" tabindex="-1"></a>wf_spec <span class="ot">&lt;-</span> <span class="fu">workflow</span>(rec, mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10" data-code-line-numbers="|12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb10-2"><a href=""></a><span class="fu">library</span>(nycflights13)</span>
+<span id="cb10-3"><a href=""></a><span class="fu">library</span>(sparsevctrs)</span>
+<span id="cb10-4"><a href=""></a></span>
+<span id="cb10-5"><a href=""></a>flights<span class="sc">$</span>arr_time <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb10-6"><a href=""></a>flights<span class="sc">$</span>time_hour <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb10-7"><a href=""></a>flights <span class="ot">&lt;-</span> flights[<span class="sc">!</span><span class="fu">is.na</span>(flights<span class="sc">$</span>arr_delay), ]</span>
+<span id="cb10-8"><a href=""></a></span>
+<span id="cb10-9"><a href=""></a>rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(arr_delay <span class="sc">~</span> ., <span class="at">data =</span> flights) <span class="sc">|&gt;</span></span>
+<span id="cb10-10"><a href=""></a>  <span class="fu">step_impute_mean</span>(<span class="fu">all_numeric_predictors</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb10-11"><a href=""></a>  <span class="fu">step_unknown</span>(<span class="fu">all_nominal_predictors</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb10-12"><a href=""></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>(), <span class="at">sparse =</span> <span class="st">"auto"</span>)</span>
+<span id="cb10-13"><a href=""></a></span>
+<span id="cb10-14"><a href=""></a>mod <span class="ot">&lt;-</span> <span class="fu">boost_tree</span>() <span class="sc">|&gt;</span></span>
+<span id="cb10-15"><a href=""></a>  <span class="fu">set_engine</span>(<span class="st">"xgboost"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-16"><a href=""></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb10-17"><a href=""></a></span>
+<span id="cb10-18"><a href=""></a>wf_spec <span class="ot">&lt;-</span> <span class="fu">workflow</span>(rec, mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 </section>
 <section id="section-5" class="slide level2 theme-slide11">
