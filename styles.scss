@@ -37,6 +37,10 @@ $font-family-sans-serif: "Lato";
 @each $name, $color in $colors {
   .text-#{$name} {
     color: $color;
+
+    code {
+      color: $color;
+    }
   }
 
   .bg-#{$name} {

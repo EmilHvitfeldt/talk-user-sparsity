@@ -131,10 +131,6 @@ Some examples of intended uses would be to
 - support adding meta-data to objects
 - support alternative representations of environments
 
-:::footer
-<https://svn.r-project.org/R/branches/ALTREP/ALTREP.html>
-:::
-
 ![](dinos/yellow7.svg){.absolute top=-15% right=30% height=200px}
 
 ## Integer sequences {.theme-slide10}
@@ -428,10 +424,6 @@ static int altrep_sparse_integer_Elt(SEXP x, R_xlen_t i) {
 :::
 :::
 
-::: footer
-<https://r-lib.github.io/sparsevctrs/>
-:::
-
 ## sparsevctrs {.theme-slide7}
 
 ::: {.columns}
@@ -449,10 +441,6 @@ static int altrep_sparse_integer_Elt(SEXP x, R_xlen_t i) {
 ![](images/sparsevctrs.svg){style="margin-top:-100px;"}
 
 :::
-:::
-
-::: footer
-<https://r-lib.github.io/sparsevctrs/>
 :::
 
 ## {.theme-slide1 .center}
@@ -568,10 +556,6 @@ Fit MARS model on the `log(dense time / sparse time)`
 
 used orbital to embed this fitted model in the toggler 
 
-::: footer
-<https://github.com/tidymodels/benchmark-sparsity-threshold>
-:::
-
 ![](dinos/pink7.svg){.absolute top=-10% right=-2% height=220px}
 
 ## {.theme-slide12 .center}
@@ -593,11 +577,7 @@ USER EXPERIENCE
 ::: {style="height:20px;"}
 :::
 
-- automatic toggle can be turned off or on manually by setting `sparse = "no"` or `"yes"` in relevant steps
-
-::: footer
-<https://www.tidymodels.org/find/sparse/>
-:::
+- automatic toggle can be turned off or on manually by setting [`sparse = "no"`]{.text-yellow} or [`"yes"`]{.text-yellow} in relevant steps
 
 ![](dinos/orange5.svg){.absolute top=10% left=10% height=400px}
 
