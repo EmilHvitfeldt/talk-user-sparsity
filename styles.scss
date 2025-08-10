@@ -116,6 +116,13 @@ $font-family-sans-serif: "Lato";
       outline-style: inset;
     }
   }
+  .slides section .fragment.spacer {
+    display: none;
+
+    &.visible {
+      display: unset;
+    }
+  }
 }
 
 .mono {
