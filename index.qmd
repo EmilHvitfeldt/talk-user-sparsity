@@ -97,7 +97,7 @@ Memory allocated: [**82 GB**]{.fragment fragment-index=5}
 ::: {.column}
 ### Today
 
-runtime: [[**100**]{.fragment fragment-index=2}]{.fragment .strike fragment-index=3} [ **4** ]{.fragment .spacer  fragment-index=4} **seconds**
+runtime: [[**100**]{.fragment fragment-index=2}]{.fragment .strike fragment-index=3} [ **4** ]{.fragment .spacer  fragment-index=4} [**seconds**]{.fragment fragment-index=2}
 
 Memory allocated: [**822 MB**]{.fragment fragment-index=5}
 
