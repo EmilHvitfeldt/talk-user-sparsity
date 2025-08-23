@@ -6,7 +6,7 @@ format:
     height: 720
     include-after-body: 
       - "all-the-js-code.html"
-pagetitle: Title of Talk
+pagetitle: Sparsity support in tidymodels, faster and less memory hungry models
 echo: true
 code-line-numbers: false
 menu: false
